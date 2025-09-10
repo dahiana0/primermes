@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestro Primer Mes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #528cff;
+            --secondary: #9ed2ff;
+            --accent: #ffcb42;
+            --text-dark: #374151;
+            --grass: #22c55e;
+            --dirt: #a0522d;
+        }
+        body {
+            font-family: 'Press Start 2P', cursive;
+            background-color: var(--secondary);
+            color: var(--text-dark);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            text-align: center;
+            padding: 1rem;
+            position: relative;
+            overflow: hidden;
+            background-image: linear-gradient(to top, var(--grass) 10%, var(--primary) 10%);
+        }
+        
+        .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease-in-out;
+            background-color: var(--primary);
+            color: white;
+        }
+        .screen.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .screen-background {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,80 Q25,60 50,80 T100,80 V100 H0 Z" fill="%2322C55E" /><path d="M0,90 Q25,70 50,90 T100,90 V100 H0 Z" fill="%23A0522D" /></svg>'),
+                              url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="10" fill="white" /><circle cx="50" cy="50" r="15" fill="white" /><circle cx="80" cy="30" r="12" fill="white" /></svg>');
+            background-repeat: repeat-x, repeat-x;
+            background-position: bottom, 0 10%;
+            background-size: 100% 20%, 50% 10%;
+            animation: moveClouds 20s linear infinite;
+        }
+
+        @keyframes moveClouds {
+            from { background-position: bottom, 0 10%; }
+            to { background-position: bottom, 100% 10%; }
+        }
+
+        .title {
+            font-family: 'Press Start 2P', cursive;
+            color: var(--accent);
+            font-size: 25px;
+            margin-bottom: 5rem;
+            text-shadow: 4px 4px 0px var(--text-dark);
+            color: white;
+        }
+        .subtitle {
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+        .btn {
+            background-color: var(--accent);
+            color: white;
+            padding: 0.75rem 2rem;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 4px 4px 0px 0px var(--text-dark);
+            border: 4px solid var(--text-dark);
+        }
+        .btn:hover {
+            transform: translateY(2px) translateX(2px);
+            box-shadow: 2px 2px 0px 0px var(--text-dark);
+        }
+
+        /* Menu icons styles */
+        .icon {
+            width: 100px;
+            height: 100px;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin: 0 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .icon:hover {
+            transform: translateY(-5px) scale(1.1);
+        }
+
+        /* Polaroid styles */
+        .polaroid {
+            background-color: white;
+            padding: 1rem 1rem 4rem 1rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            position: absolute;
+            transform: rotate(var(--angle)) translateY(var(--y)) translateX(var(--x));
+        }
+        .polaroid img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+        
+        /* Music section styling */
+        .music-item {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .music-item img {
+            width: 150px;
+            height: auto;
+        }
+        .music-text {
+            text-align: left;
+        }
+        .music-text h3 {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #000000;
+            margin-bottom: 0.5rem;
+        }
+        .music-text p {
+            font-size: 0.875rem;
+            color: #000000;
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Screen -->
+    <div id="main-screen" class="screen screen-background active">
+        <h1 class="title mb-8">¡Feliz Primer Mes Mi Amor!</h1>
+        <button id="play-button" class="btn text-xl mt-16 px-8">START</button>
+    </div>
+
+    <!-- Menu Screen -->
+    <div id="menu-screen" class="screen screen-background">
+        <h1 class="title mb-16">CLICK ME!</h1>
+        <div class="flex justify-center items-center space-x-8">
+            <button id="photos-button" class="icon">
+                <img src="./multimedia/camara-removebg-preview.png" alt="Cámara pixelada">
+            </button>
+            <button id="songs-button" class="icon">
+                <img src="./multimedia/musica-removebg-preview (1).png" alt="Audífonos pixelados">
+            </button>
+            <button id="letters-button" class="icon">
+                <img src="./multimedia/carta-removebg-preview.png" alt="Carta pixelada">
+            </button>
+        </div>
+        <button id="back-to-main-button" class="btn back-btn text-xl absolute bottom-10 left-10">MENU</button>
+    </div>
+
+    <!-- Photos Screen -->
+    <div id="photos-screen" class="screen screen-background">
+        <h2 class="title text-white">We keep this love in a photograph.</h2>
+        <div class="relative w-full h-full flex justify-center items-center">
+            <!-- Polaroid grid -->
+            <div class="polaroid" style="--angle: -5deg; --x: 0px; --y: -150px; width: 250px;">
+                <img src="./multimedia/1.jpg" alt="Foto de un recuerdo juntos">
+            </div>
+            <div class="polaroid" style="--angle: 10deg; --x: 150px; --y: -50px; width: 200px;">
+                <img src="./multimedia/2.jpg" alt="Una foto divertida">
+            </div>
+            <div class="polaroid" style="--angle: -8deg; --x: -120px; --y: 80px; width: 220px;">
+                <img src="./multimedia/3.jpg" alt="Selfie de la primera cita">
+            </div>
+            <div class="polaroid" style="--angle: 5deg; --x: -200px; --y: -100px; width: 180px;">
+                <img src="./multimedia/4.jpg" alt="Celebrando juntos">
+            </div>
+            <div class="polaroid" style="--angle: -15deg; --x: 80px; --y: 100px; width: 230px;">
+                <img src="./multimedia/5.jpg" alt="Momento especial">
+            </div>
+        </div>
+        <button id="back-from-photos-button" class="btn back-btn text-xl absolute bottom-10 left-10">MENU</button>
+    </div>
+
+    <!-- Songs Screen -->
+    <div id="songs-screen" class="screen screen-background">
+        <h2 class="title text-white">A playlist just for you</h2>
+        <div class="flex flex-col space-y-8 w-full max-w-lg mt-8">
+            <!-- CANCIÓN 1 -->
+            <div class="music-item">
+                <img src="./multimedia/reprocuctor-removebg-preview.png" alt="Reproductor de música" class="song-icon">
+                <div class="music-text">
+                    <h3>Daylight Taylor Swift </h3>
+                    <p>I don't wanna look at anything else now that I saw you</p>
+                </div>
+            </div>
+            <!-- CANCIÓN 2 -->
+            <div class="music-item">
+                <img src="./multimedia/reprocuctor-removebg-preview.png" alt="Reproductor de música" class="song-icon">
+                <div class="music-text">
+                    <h3>Alma Dinamita WOS</h3>
+                    <p>Me gusta todo lo que sos, y un poco más<br>El barrio queda sin luz cuando no estás<br>Las caras cambian todas cuando vos llegás</p>
+                </div>
+            </div>
+        </div>
+        <button id="back-from-songs-button" class="btn back-btn text-xl absolute bottom-10 left-10">MENU</button>
+    </div>
+
+    <!-- Letters Screen -->
+    <div id="letters-screen" class="screen" style="background-color: #79a8e9;">
+        <h2 class="title mb-4">I love you more than words could say.</h2>
+        <div class="relative w-full max-w-xl p-8 bg-white border-4 border-dashed border-red-500 rounded-lg shadow-lg">
+            <h3 class="font-bold text-lg text-left mb-4" style="color: #000000;">Message</h3>
+            <p class="letter-content text-left" style="color: #000000;">
+                Mi amor, no puedo creer que ya haya pasado un mes desde que empezamos este hermoso viaje juntos. Cada día a tu lado es una aventura, llena de risas, momentos tranquilos y esa conexión que siento que es única. Eres la persona más maravillosa que he conocido, y estoy muy emocionada por todo lo que nos espera. Te amo con todo mi corazón.
+                <br><br>
+                Con todo mi cariño,
+                Para mi Bebe 
+                      ATT:Dahia 
+            
+            </p>
+        </div>
+        <button id="back-from-letters-button" class="btn back-btn text-xl absolute bottom-10 left-10">MENU</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const screens = {
+                main: document.getElementById('main-screen'),
+                menu: document.getElementById('menu-screen'),
+                photos: document.getElementById('photos-screen'),
+                songs: document.getElementById('songs-screen'),
+                letters: document.getElementById('letters-screen')
+            };
+
+            const buttons = {
+                play: document.getElementById('play-button'),
+                photos: document.getElementById('photos-button'),
+                songs: document.getElementById('songs-button'),
+                letters: document.getElementById('letters-button'),
+                backToMain: document.getElementById('back-to-main-button'),
+                backFromPhotos: document.getElementById('back-from-photos-button'),
+                backFromSongs: document.getElementById('back-from-songs-button'),
+                backFromLetters: document.getElementById('back-from-letters-button')
+            };
+            
+            function showScreen(screenToShow) {
+                Object.values(screens).forEach(screen => screen.classList.remove('active'));
+                screenToShow.classList.add('active');
+            }
+
+            buttons.play.addEventListener('click', () => showScreen(screens.menu));
+            buttons.photos.addEventListener('click', () => showScreen(screens.photos));
+            buttons.songs.addEventListener('click', () => showScreen(screens.songs));
+            buttons.letters.addEventListener('click', () => showScreen(screens.letters));
+
+            buttons.backToMain.addEventListener('click', () => showScreen(screens.main));
+            buttons.backFromPhotos.addEventListener('click', () => showScreen(screens.menu));
+            buttons.backFromSongs.addEventListener('click', () => showScreen(screens.menu));
+            buttons.backFromLetters.addEventListener('click', () => showScreen(screens.menu));
+        });
+    </script>
+</body>
+</html>
